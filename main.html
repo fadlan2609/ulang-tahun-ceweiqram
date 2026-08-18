@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎂 Selamat Ulang Tahun Zhafirah</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body class="birthday-page">
+    <!-- Background Music -->
+    <audio id="background-music" loop>
+        <source src="audio/lagu-ultah.mp3" type="audio/mp3" />
+    </audio>
+
+    <!-- Music Control -->
+    <div class="music-control">
+        <button id="music-toggle" class="music-btn" aria-label="Putar atau hentikan musik">
+            <i class="fas fa-music"></i>
+        </button>
+        <button id="logout-btn" class="music-btn logout-btn" aria-label="Keluar">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+    </div>
+
+    <!-- Modal Izin Microphone -->
+    <div id="mic-modal" class="mic-modal" style="display: none">
+        <div class="mic-modal-content">
+            <div class="mic-modal-icon">
+                <i class="fas fa-microphone-alt"></i>
+            </div>
+            <h3>Izinkan Akses Microphone</h3>
+            <p>Untuk meniup lilin, izinkan akses ke microphone Anda.</p>
+            <div class="mic-modal-buttons">
+                <button id="allow-mic" class="btn-primary">
+                    <i class="fas fa-check"></i> Izinkan
+                </button>
+                <button id="skip-mic" class="btn-secondary">
+                    <i class="fas fa-times"></i> Lewati
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- ============ SECTION 1: CAKE & CANDLES ============ -->
+        <section id="cake-section" class="cake-section">
+            <header class="birthday-header">
+                <h1>
+                    <i class="fas fa-birthday-cake"></i> Selamat Ulang Tahun!
+                    <i class="fas fa-birthday-cake"></i>
+                </h1>
+                <div class="age-display">
+                    <span class="age-number">24</span>
+                    <p class="age-text">Tahun Penuh Cinta dan Kebahagiaan</p>
+                </div>
+            </header>
+
+            <div class="cake-container">
+                <div class="cake">
+                    <div class="cake-bottom"></div>
+                    <div class="cake-middle"></div>
+                    <div class="cake-top"></div>
+
+                    <div class="candles">
+                        <div class="candle"><div class="flame" data-candle="1"></div></div>
+                        <div class="candle"><div class="flame" data-candle="2"></div></div>
+                        <div class="candle"><div class="flame" data-candle="3"></div></div>
+                        <div class="candle"><div class="flame" data-candle="4"></div></div>
+                        <div class="candle"><div class="flame" data-candle="5"></div></div>
+                        <div class="candle"><div class="flame" data-candle="6"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blow-control-section">
+                <button id="blow-button" class="blow-btn">
+                    <i class="fas fa-wind"></i> Tekan untuk Meniup Lilin
+                </button>
+
+                <div class="blow-status">
+                    <div id="mic-status" class="status-item">
+                        <i class="fas fa-microphone-slash"></i>
+                        <span>Microphone belum diaktifkan</span>
+                    </div>
+                    <div id="blow-instruction" class="status-item" style="display: none">
+                        <i class="fas fa-volume-up"></i>
+                        <span>Tiup ke microphone sekarang!</span>
+                    </div>
+                    <div id="blow-result" class="status-item" style="display: none">
+                        <i class="fas fa-check"></i>
+                        <span id="result-text"></span>
+                    </div>
+                </div>
+
+                <div class="candle-counter">
+                    <div class="counter-display">
+                        <span id="candles-lit">6</span> / 6
+                    </div>
+                    <p class="counter-label">Lilin yang masih menyala</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ SECTION 2: UCAPAN ============ -->
+        <section id="ucapan-section" class="ucapan-section hidden">
+            <div class="ucapan-card">
+                <div class="confetti-container" id="confettiContainer"></div>
+                <div class="ucapan-content">
+                    <div class="sparkle">🎉</div>
+                    <h1>💗 Selamat Ulang Tahun Zhafirah Nur! 💗</h1>
+                    <p class="ucapan-message">
+                        Semoga di usia yang baru ini, semua impian dan harapanmu menjadi kenyataan.<br />
+                        Terima kasih telah menjadi bagian terindah dalam hidupku.<br />
+                        Aku akan selalu ada di sampingmu, sekarang dan selamanya.
+                    </p>
+                    <p class="ucapan-from">— Muhammad Iqram</p>
+                    <button id="nextBtn" class="btn-next">
+                        Lanjut ke Menu <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============ SECTION 3: 3 MENU ============ -->
+        <section id="boxes-section" class="boxes-section hidden">
+            <div class="boxes-header">
+                <h2>💕 Untukmu, Zhafirah 💕</h2>
+                <p>Pilih salah satu kejutan spesial untukmu</p>
+            </div>
+
+            <div class="boxes-container">
+                <!-- Menu 1: Surat -->
+                <div class="box-card box-surat">
+                    <div class="box-icon"><i class="fas fa-envelope"></i></div>
+                    <h3>💌 Surat Cinta</h3>
+                    <p>Sebuah surat dari hati untukmu</p>
+                    <a href="surat.html" class="box-btn">Buka Surat</a>
+                </div>
+
+                <!-- Menu 2: Galeri -->
+                <div class="box-card box-galeri">
+                    <div class="box-icon"><i class="fas fa-images"></i></div>
+                    <h3>🌌 Galeri</h3>
+                    <p>30 kenangan indah bersamamu</p>
+                    <a href="galeri.html" class="box-btn">Buka Galeri</a>
+                </div>
+
+                <!-- Menu 3: Gift -->
+                <div class="box-card box-gift">
+                    <div class="box-icon"><i class="fas fa-gift"></i></div>
+                    <h3>🎁 Hadiah</h3>
+                    <p>Buket bunga spesial untukmu</p>
+                    <a href="gift.html" class="box-btn">Buka Gift</a>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="copyright">
+                <p>
+                    © 2026 <a href="https://www.instagram.com/fdlann26/" target="_blank">Fadlan Fiqri Fauzan</a> 
+                    - movedigitalku -
+                    <a href="https://www.instagram.com/fdlann26/" target="_blank">@fdlann26</a>
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Balloons Animation -->
+    <div class="balloon-animation" aria-hidden="true">
+        <div class="balloon-anim"></div>
+        <div class="balloon-anim"></div>
+        <div class="balloon-anim"></div>
+        <div class="balloon-anim"></div>
+        <div class="balloon-anim"></div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/blow-candles.js"></script>
+</body>
+</html>

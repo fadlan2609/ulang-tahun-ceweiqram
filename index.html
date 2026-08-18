@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>💗 Zhafirah · Ulang Tahun</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(135deg, #1a0a1e, #2d152d);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Poppins', sans-serif;
+        }
+        .loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        .loader-heart {
+            font-size: 50px;
+            color: #ff6b9d;
+            animation: heartbeat 1.2s ease-in-out infinite;
+        }
+        .loader-text {
+            color: #ffb3c6;
+            font-size: 18px;
+            letter-spacing: 2px;
+            animation: fadeText 1.5s ease-in-out infinite;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            14% { transform: scale(1.3); }
+            28% { transform: scale(1); }
+            42% { transform: scale(1.3); }
+            70% { transform: scale(1); }
+        }
+        @keyframes fadeText {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-heart">💗</div>
+        <div class="loader-text">Untuk Zhafirah Nur</div>
+    </div>
+    <script>
+        setTimeout(() => window.location.href = "login.html", 1500);
+    </script>
+</body>
+</html>

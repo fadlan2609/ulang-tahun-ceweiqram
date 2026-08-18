@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login · Kejutan Ulang Tahun</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+</head>
+<body class="login-page">
+    <!-- Background Music -->
+    <audio id="background-music" loop>
+        <source src="audio/lagu-ultah.mp3" type="audio/mp3" />
+        Browser Anda tidak mendukung elemen audio.
+    </audio>
+
+    <!-- Music Control -->
+    <div class="music-control">
+        <button id="music-toggle" class="music-btn" aria-label="Putar atau hentikan musik latar">
+            <i class="fas fa-music"></i>
+            <span class="sr-only">Putar/hentikan musik</span>
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="login-card">
+            <div class="login-header">
+                <h1>
+                    <i class="fas fa-heart"></i> Selamat Datang <i class="fas fa-heart"></i>
+                </h1>
+                <p class="subtitle">Masuk untuk melihat kejutan spesial ulang tahun</p>
+            </div>
+
+            <div class="login-form">
+                <h2>Masukkan Kode Akses</h2>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i> Username
+                        </label>
+                        <input type="text" id="username" placeholder="Masukkan username" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <input type="password" id="password" placeholder="Masukkan password" required />
+                    </div>
+
+                    <button type="submit" class="btn-primary" aria-label="Masuk ke halaman kejutan">
+                        <i class="fas fa-unlock-alt"></i> Buka Kejutan
+                    </button>
+
+                    <div id="login-message" class="message"></div>
+                </form>
+
+                <div class="hint-box">
+                    <h3><i class="fas fa-lightbulb"></i> Petunjuk</h3>
+                    <div class="hint-content">
+                        <p><strong>Username:</strong> username instagram</p>
+                        <p><strong>Password:</strong> tanggal/bulan/tahun lahir</p>
+                        <p class="note">
+                            <i class="fas fa-calendar-alt"></i> Tanggal lahir: 12 September 2002
+                        </p>
+                    </div>
+                </div>
+
+                <div class="romantic-note">
+                    <p>
+                        <i class="fas fa-heart"></i> Untuk Zhafirah Nur dari Muhammad Iqram
+                    </p>
+                </div>
+            </div>
+
+            <div class="login-footer">
+                <p>Dibuat dengan <i class="fas fa-heart heartbeat"></i> untuk Zhafirah Nur</p>
+            </div>
+        </div>
+
+        <!-- Floating Elements -->
+        <div class="floating-hearts">
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+            <div class="heart"></div>
+        </div>
+
+        <div class="balloons">
+            <div class="balloon pink" aria-hidden="true"></div>
+            <div class="balloon blue" aria-hidden="true"></div>
+            <div class="balloon yellow" aria-hidden="true"></div>
+            <div class="balloon green" aria-hidden="true"></div>
+            <div class="balloon purple" aria-hidden="true"></div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🌌 Galeri Zhafirah</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="galeri-page">
+    <div class="container">
+        <div class="galeri-container">
+            <!-- Tombol kembali ke main.html dengan hash #boxes-section -->
+            <a href="main.html#boxes-section" class="btn-back">
+                <i class="fas fa-arrow-left"></i> Kembali ke Menu
+            </a>
+
+            <header class="galeri-header">
+                <h1>🌌 Galeri Bintang Zhafirah</h1>
+                <p class="subtitle">30 momen indah bersamamu ✨</p>
+            </header>
+
+            <div id="galaxy-container">
+                <div id="info-overlay">
+                    <h1 class="galaxy-title">✨ Kenangan Bersama ✨</h1>
+                    <p class="galaxy-subtitle">Klik foto untuk melihat lebih dekat</p>
+                </div>
+                <button id="toggle-rotation" class="control-btn">
+                    <i class="fas fa-pause"></i>
+                </button>
+            </div>
+
+            <div class="memory-counter">
+                <span id="memory-count">30</span> Kenangan Indah Bersamamu 💕
+            </div>
+
+            <div class="copyright">
+                <p>
+                    © 2026 <a href="https://www.instagram.com/fdlann26/" target="_blank">Fadlan Fiqri Fauzan</a> 
+                    - movedigitalku -
+                    <a href="https://www.instagram.com/fdlann26/" target="_blank">@fdlann26</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/galeri.js"></script>
+</body>
+</html>

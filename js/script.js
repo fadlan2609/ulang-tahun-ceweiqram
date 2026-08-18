@@ -75,7 +75,7 @@ function initLoginPage() {
             const password = document.getElementById('password').value.trim();
             
             // Check credentials - ZHAFIRAH NUR
-            if (username === 'zhafnur_12' && password === '12092002') {
+            if (username === 'zhafnur_12' && password === '12092004') {
                 showLoginMessage('Login berhasil! Mengarahkan ke kejutan...', 'success');
                 
                 localStorage.setItem('birthdayLoggedIn', 'true');

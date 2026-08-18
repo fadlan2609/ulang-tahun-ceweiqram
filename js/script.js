@@ -21,6 +21,7 @@ function initMusic() {
     if (musicToggle && backgroundMusic) {
         musicToggle.addEventListener('click', toggleMusic);
         
+        // Auto play saat halaman dimuat
         setTimeout(() => {
             if (!musicPlaying && backgroundMusic) {
                 backgroundMusic.play().then(() => {
@@ -30,7 +31,7 @@ function initMusic() {
                     console.log('Autoplay blocked. User must click to play music.');
                 });
             }
-        }, 1000);
+        }, 500);
     }
 }
 
@@ -80,6 +81,9 @@ function initLoginPage() {
                 
                 localStorage.setItem('birthdayLoggedIn', 'true');
                 localStorage.setItem('birthdayUsername', username);
+                
+                // Simpan state musik agar tetap menyala
+                localStorage.setItem('musicPlaying', musicPlaying ? 'true' : 'false');
                 
                 setTimeout(() => {
                     window.location.href = 'main.html';

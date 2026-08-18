@@ -51,14 +51,17 @@ window.initGalaxy = function() {
     
     console.log('🌟 Initializing Galaxy 3D with 30 photos...');
     
+    // Scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0a0a1a);
     scene.fog = new THREE.FogExp2(0x0a0a1a, 0.008);
     
+    // Camera
     camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 1000);
     camera.position.set(0, 2, 14);
     camera.lookAt(0, 0, 0);
     
+    // Renderer
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -66,16 +69,20 @@ window.initGalaxy = function() {
     renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
     
+    // Raycaster
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
     
+    // Create galaxy
     createGalaxy();
     createStars();
     createPhotos();
     createParticles();
     
+    // Animation
     animate();
     
+    // Events
     window.addEventListener('resize', onResize);
     renderer.domElement.addEventListener('click', onPhotoClick);
     renderer.domElement.addEventListener('mousemove', onPhotoHover);
@@ -88,6 +95,7 @@ window.initGalaxy = function() {
 };
 
 function createGalaxy() {
+    // Lights
     const ambient = new THREE.AmbientLight(0x404070, 0.4);
     scene.add(ambient);
     
@@ -103,6 +111,7 @@ function createGalaxy() {
     backLight.position.set(-5, -3, -8);
     scene.add(backLight);
     
+    // Orbit rings
     const ringConfigs = [
         { radius: 2.8, color: 0xffd700, opacity: 0.08, tilt: 0 },
         { radius: 3.8, color: 0xff6b9d, opacity: 0.06, tilt: 0.2 },
@@ -126,6 +135,7 @@ function createGalaxy() {
         scene.add(ring);
     });
     
+    // Orbit group for photos
     orbitGroup = new THREE.Group();
     scene.add(orbitGroup);
 }
@@ -622,12 +632,58 @@ animationStyles.textContent = `
 `;
 document.head.appendChild(animationStyles);
 
+// ============================================
+// MAIN - MUSIK TETAP NYALA
+// ============================================
 document.addEventListener('DOMContentLoaded', function() {
     if (!localStorage.getItem('birthdayLoggedIn')) {
         window.location.href = 'login.html';
         return;
     }
 
+    // ===== MUSIK TETAP NYALA =====
+    const musicToggle = document.getElementById('music-toggle');
+    const bgMusic = document.getElementById('background-music');
+    let musicPlaying = localStorage.getItem('musicPlaying') === 'true';
+
+    if (musicToggle && bgMusic) {
+        if (musicPlaying) {
+            musicToggle.innerHTML = '<i class="fas fa-music-slash"></i>';
+        } else {
+            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+        }
+
+        musicToggle.addEventListener('click', function() {
+            if (musicPlaying) {
+                bgMusic.pause();
+                musicPlaying = false;
+                this.innerHTML = '<i class="fas fa-music"></i>';
+                localStorage.setItem('musicPlaying', 'false');
+            } else {
+                bgMusic.play().catch(() => {});
+                musicPlaying = true;
+                this.innerHTML = '<i class="fas fa-music-slash"></i>';
+                localStorage.setItem('musicPlaying', 'true');
+            }
+        });
+
+        if (musicPlaying) {
+            bgMusic.play().catch(() => {});
+        }
+    }
+
+    // ===== LOGOUT =====
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            localStorage.removeItem('birthdayLoggedIn');
+            localStorage.removeItem('birthdayUsername');
+            localStorage.removeItem('musicPlaying');
+            window.location.href = 'login.html';
+        });
+    }
+
+    // ===== INIT GALAXY =====
     if (typeof THREE !== 'undefined') {
         setTimeout(window.initGalaxy, 300);
     } else {

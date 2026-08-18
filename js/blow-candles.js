@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Cek apakah lilin sudah padam
     if (localStorage.getItem('candlesBlown') === 'true') {
-        // Sembunyikan lilin dan tampilkan menu
         const cakeSection = document.getElementById('cake-section');
         const ucapanSection = document.getElementById('ucapan-section');
         const boxesSection = document.getElementById('boxes-section');

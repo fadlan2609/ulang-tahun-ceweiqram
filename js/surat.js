@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let musicPlaying = localStorage.getItem('musicPlaying') === 'true';
 
     if (musicToggle && bgMusic) {
+        // Update tombol sesuai state
         if (musicPlaying) {
             musicToggle.innerHTML = '<i class="fas fa-music-slash"></i>';
         } else {
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
+        // Auto play jika state true
         if (musicPlaying) {
             bgMusic.play().catch(() => {});
         }

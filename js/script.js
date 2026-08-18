@@ -18,20 +18,41 @@ function initMusic() {
     backgroundMusic = document.getElementById('background-music');
     const musicToggle = document.getElementById('music-toggle');
     
+    // Cek state musik dari localStorage
+    const savedState = localStorage.getItem('musicPlaying');
+    if (savedState === 'true') {
+        musicPlaying = true;
+    }
+    
     if (musicToggle && backgroundMusic) {
+        // Update tombol sesuai state
+        if (musicPlaying) {
+            musicToggle.innerHTML = '<i class="fas fa-music-slash"></i>';
+        } else {
+            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
+        }
+
         musicToggle.addEventListener('click', toggleMusic);
         
-        // Auto play saat halaman dimuat
-        setTimeout(() => {
-            if (!musicPlaying && backgroundMusic) {
-                backgroundMusic.play().then(() => {
-                    musicPlaying = true;
-                    updateMusicButton();
-                }).catch(e => {
-                    console.log('Autoplay blocked. User must click to play music.');
-                });
-            }
-        }, 500);
+        // Auto play jika state true
+        if (musicPlaying) {
+            backgroundMusic.play().then(() => {
+                updateMusicButton();
+            }).catch(() => {});
+        } else {
+            // Auto play pertama kali
+            setTimeout(() => {
+                if (!musicPlaying && backgroundMusic) {
+                    backgroundMusic.play().then(() => {
+                        musicPlaying = true;
+                        localStorage.setItem('musicPlaying', 'true');
+                        updateMusicButton();
+                    }).catch(e => {
+                        console.log('Autoplay blocked. User must click to play music.');
+                    });
+                }
+            }, 500);
+        }
     }
 }
 
@@ -41,11 +62,13 @@ function toggleMusic() {
     if (musicPlaying) {
         backgroundMusic.pause();
         musicPlaying = false;
+        localStorage.setItem('musicPlaying', 'false');
     } else {
         backgroundMusic.play().catch(e => {
             showToast('Silakan klik tombol musik untuk memulai audio.', 'info');
         });
         musicPlaying = true;
+        localStorage.setItem('musicPlaying', 'true');
     }
     updateMusicButton();
 }
@@ -54,9 +77,9 @@ function updateMusicButton() {
     const musicToggle = document.getElementById('music-toggle');
     if (musicToggle) {
         if (musicPlaying) {
-            musicToggle.innerHTML = '<i class="fas fa-music"></i><span class="sr-only">Hentikan musik</span>';
+            musicToggle.innerHTML = '<i class="fas fa-music-slash"></i>';
         } else {
-            musicToggle.innerHTML = '<i class="fas fa-music-slash"></i><span class="sr-only">Putar musik</span>';
+            musicToggle.innerHTML = '<i class="fas fa-music"></i>';
         }
     }
 }
@@ -82,8 +105,10 @@ function initLoginPage() {
                 localStorage.setItem('birthdayLoggedIn', 'true');
                 localStorage.setItem('birthdayUsername', username);
                 
-                // Simpan state musik agar tetap menyala
-                localStorage.setItem('musicPlaying', musicPlaying ? 'true' : 'false');
+                // Pastikan musik tetap menyala
+                if (musicPlaying) {
+                    localStorage.setItem('musicPlaying', 'true');
+                }
                 
                 setTimeout(() => {
                     window.location.href = 'main.html';

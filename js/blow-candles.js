@@ -256,11 +256,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (cakeSection) cakeSection.style.display = 'none';
                 if (ucapanSection) ucapanSection.classList.remove('hidden');
                 createConfetti();
-                
-                const bgMusic = document.getElementById('background-music');
-                if (bgMusic) {
-                    bgMusic.play().catch(() => {});
-                }
             }, 1000);
         }
     }

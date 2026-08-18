@@ -4,16 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    // ===== MUSIC CONTROL - TETAP NYALA =====
+    // ===== MUSIK TETAP NYALA =====
     const musicToggle = document.getElementById('music-toggle');
     const bgMusic = document.getElementById('background-music');
-    let musicPlaying = false;
-
-    // Cek state musik dari localStorage
-    const musicState = localStorage.getItem('musicPlaying');
-    if (musicState === 'true') {
-        musicPlaying = true;
-    }
+    let musicPlaying = localStorage.getItem('musicPlaying') === 'true';
 
     if (musicToggle && bgMusic) {
         // Update tombol sesuai state
@@ -37,17 +31,16 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Auto play musik (tetap nyala)
+        // Auto play jika state true
         if (musicPlaying) {
             bgMusic.play().catch(() => {});
         } else {
-            // Jika belum pernah di set, mulai auto play
+            // Coba auto play pertama kali
             bgMusic.play().then(() => {
                 musicPlaying = true;
                 musicToggle.innerHTML = '<i class="fas fa-music-slash"></i>';
                 localStorage.setItem('musicPlaying', 'true');
             }).catch(() => {
-                // User harus klik manual jika autoplay diblokir
                 console.log('Autoplay blocked, user must click to play');
             });
         }

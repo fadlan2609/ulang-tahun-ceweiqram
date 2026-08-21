@@ -88,11 +88,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ===== BUKA BUKET BUNGA + KIRIM WA OTOMATIS =====
     bukaBtn.addEventListener('click', function() {
-        // Animasi bunga mekar
         bukaBtn.disabled = true;
         bukaBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
         
-        // Petal jatuh
         for (let i = 0; i < 30; i++) {
             setTimeout(() => {
                 const petal = document.createElement('div');
@@ -115,26 +113,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }, i * 100);
         }
 
-        // ===== KIRIM PESAN KE WHATSAPP =====
-        const nomor = '6282147774953'; // 082147774953
+        const nomor = '6282147774953';
         const pesan = 'Pesanan atas nama Zhafirah Nur sudah boleh dikirim sekarang ya, saya sudah dirumah, Terimakasih';
         const text = encodeURIComponent(pesan);
         
-        // Coba buka WhatsApp
         setTimeout(() => {
             try {
-                // Coba dengan wa.me
                 window.open(`https://wa.me/${nomor}?text=${text}`, '_blank');
                 
-                // Update tombol
-                bukaBtn.innerHTML = '<i class="fas fa-check"></i> Pesan Terkirim! 💐';
+                bukaBtn.innerHTML = '<i class="fas fa-check"></i> Pesan Terkirim!';
                 bukaBtn.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
                 
-                // Tampilkan status sukses
                 sendStatus.className = 'send-status show success';
                 sendStatus.innerHTML = '<i class="fas fa-check-circle"></i> <span>Pesan berhasil dikirim ke WhatsApp!</span>';
                 
-                // Reset setelah 5 detik
                 setTimeout(() => {
                     sendStatus.className = 'send-status';
                 }, 5000);
@@ -159,30 +151,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // ===== PREVIEW =====
     previewBtn.addEventListener('click', function() {
-        const pesan = pesanInput.value.trim() || '💕 (ucapan dari hati)';
+        const pesan = pesanInput.value.trim() || '(ucapan dari hati)';
         previewContent.textContent = pesan;
         previewBox.classList.remove('hidden');
     });
 
-    // ===== KIRIM UCAPAN =====
+    // ===== KIRIM UCAPAN DENGAN NAMA PENGIRIM =====
     kirimBtn.addEventListener('click', function(e) {
         e.preventDefault();
         
         const pesan = pesanInput.value.trim();
         if (!pesan) {
-            alert('💗 Tulis ucapan terima kasihmu dulu ya!');
+            alert('Tulis ucapan terima kasihmu dulu ya!');
             pesanInput.focus();
             return;
         }
         
         const nomor = '6285174105203';
-        const text = encodeURIComponent(
-            `💗 Hai Iqram! 💗\n\n` +
-            `Terima kasih banyak ya udah buatin website ulang tahun yang keren banget untukku! 🥰\n` +
-            `Bunga-bunganya juga cantik banget! 🌸\n\n` +
-            `${pesan}\n\n` +
-            `💕 Dari Zhafirah dengan cinta 💕`
-        );
+        
+        // Ambil nama pengirim dari input
+        const pengirim = document.getElementById('pengirim').value || 'Zhafirah Nur';
+        
+        // Kirim pesan + nama pengirim di akhir
+        const text = encodeURIComponent(pesan + '\n\n- ' + pengirim);
         
         window.open(`https://wa.me/${nomor}?text=${text}`, '_blank');
         
@@ -198,17 +189,3 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     });
 });
-
-// Global function for emoji picker
-function addEmoji(emoji) {
-    const textarea = document.getElementById('pesanUcapan');
-    if (textarea) {
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const text = textarea.value;
-        textarea.value = text.substring(0, start) + emoji + text.substring(end);
-        textarea.focus();
-        textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
-        textarea.dispatchEvent(new Event('input'));
-    }
-}

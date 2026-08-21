@@ -156,34 +156,73 @@ document.addEventListener('DOMContentLoaded', function() {
         previewBox.classList.remove('hidden');
     });
 
-    // ===== KIRIM UCAPAN DENGAN NAMA PENGIRIM =====
+    // =====================================================
+    // KIRIM UCAPAN KE WHATSAPP
+    // =====================================================
     kirimBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        
+
         const pesan = pesanInput.value.trim();
+
         if (!pesan) {
             alert('Tulis ucapan terima kasihmu dulu ya!');
             pesanInput.focus();
             return;
         }
-        
+
         const nomor = '6285174105203';
-        
-        // Ambil nama pengirim dari input
-        const pengirim = document.getElementById('pengirim').value || 'Zhafirah Nur';
-        
-        // Kirim pesan + nama pengirim di akhir
-        const text = encodeURIComponent(pesan + '\n\n- ' + pengirim);
-        
-        window.open(`https://wa.me/${nomor}?text=${text}`, '_blank');
-        
-        statusMessage.classList.remove('hidden');
+
+        const pengirimInput = document.getElementById('pengirim');
+        const pengirim = pengirimInput && pengirimInput.value.trim()
+            ? pengirimInput.value.trim()
+            : 'Zhafirah Nur';
+
+        const fullMessage = pesan + '\n\n- ' + pengirim;
+
+        // =================================================
+        // CEK KARAKTER ASLI (DEBUG)
+        // =================================================
+        console.log('PESAN ASLI:', fullMessage);
+
+        console.log(
+            'CHARACTER:',
+            [...fullMessage].map(char => ({
+                char: char,
+                code: 'U+' + char.codePointAt(0).toString(16).toUpperCase()
+            }))
+        );
+
+        // =================================================
+        // ENCODE UTF-8
+        // =================================================
+        const text = encodeURIComponent(fullMessage);
+
+        console.log('HASIL ENCODE:', text);
+
+        // =================================================
+        // WHATSAPP - PAKAI api.whatsapp.com
+        // =================================================
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${nomor}&text=${text}`;
+
+        console.log('WHATSAPP URL:', whatsappUrl);
+
+        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+
+        // =================================================
+        // STATUS
+        // =================================================
+        if (statusMessage) {
+            statusMessage.classList.remove('hidden');
+        }
+
         kirimBtn.innerHTML = '<i class="fas fa-check"></i> Terkirim!';
+
         kirimBtn.style.opacity = '0.6';
         kirimBtn.disabled = true;
-        
+
         setTimeout(() => {
             kirimBtn.innerHTML = '<i class="fab fa-whatsapp"></i> Kirim ke WhatsApp';
+
             kirimBtn.style.opacity = '1';
             kirimBtn.disabled = false;
         }, 5000);

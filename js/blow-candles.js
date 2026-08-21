@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cakeSection = document.getElementById('cake-section');
     const boxesSection = document.getElementById('boxes-section');
     const nextBtn = document.getElementById('nextBtn');
+    const backToCakeBtn = document.getElementById('backToCakeBtn');
     
     if (!blowButton) return;
     
@@ -41,6 +42,55 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (candlesLitElement) {
         candlesLitElement.textContent = candlesLit;
+    }
+    
+    // ===== TOMBOL KEMBALI KE TIUP LILIN =====
+    if (backToCakeBtn) {
+        backToCakeBtn.addEventListener('click', function() {
+            // Tampilkan lilin
+            if (cakeSection) cakeSection.style.display = 'block';
+            if (ucapanSection) ucapanSection.classList.add('hidden');
+            if (boxesSection) boxesSection.classList.add('hidden');
+            
+            // Hapus state candlesBlown
+            localStorage.removeItem('candlesBlown');
+            
+            // Reset lilin
+            candlesLit = flames.length;
+            if (candlesLitElement) {
+                candlesLitElement.textContent = candlesLit;
+            }
+            
+            // Reset semua lilin
+            flames.forEach(flame => {
+                flame.classList.remove('blown');
+                flame.classList.remove('listening');
+                flame.style.animation = '';
+                flame.style.display = 'block';
+                flame.style.opacity = '1';
+            });
+            
+            // Reset tombol blow
+            blowButton.disabled = false;
+            blowButton.innerHTML = '<i class="fas fa-wind"></i> Tekan untuk Meniup Lilin';
+            blowButton.style.background = 'linear-gradient(135deg, #ff6b8b, #ff8e53)';
+            blowButton.classList.remove('blowing');
+            
+            // Reset status
+            if (micStatus) {
+                micStatus.innerHTML = '<i class="fas fa-microphone-slash"></i> Microphone belum diaktifkan';
+                micStatus.classList.remove('active');
+            }
+            if (blowInstruction) blowInstruction.style.display = 'none';
+            if (blowResult) blowResult.style.display = 'none';
+            
+            // Scroll ke lilin
+            setTimeout(() => {
+                cakeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+            
+            showToast('Lilin direset! Tiup lagi ya! 🕯️', 'info');
+        });
     }
     
     // Show microphone modal
@@ -319,3 +369,55 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+// ===== TOAST FUNCTION =====
+function showToast(message, type = 'success') {
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
+    
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'error' ? '#ff4444' : type === 'info' ? '#2196F3' : '#25D366'};
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        z-index: 10000;
+        animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+        max-width: 300px;
+    `;
+    
+    document.body.appendChild(toast);
+    
+    if (!document.querySelector('#toast-animations')) {
+        const style = document.createElement('style');
+        style.id = 'toast-animations';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    setTimeout(() => {
+        if (toast.parentNode === document.body) {
+            document.body.removeChild(toast);
+        }
+    }, 3000);
+}

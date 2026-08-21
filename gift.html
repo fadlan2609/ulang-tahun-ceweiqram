@@ -9,9 +9,24 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
 </head>
 <body class="gift-page not-loaded">
+    <!-- Background Music -->
+    <audio id="background-music" loop>
+        <source src="audio/lagu-ultah.mp3" type="audio/mp3" />
+    </audio>
+
+    <!-- Music Control -->
+    <div class="music-control">
+        <button id="music-toggle" class="music-btn" aria-label="Putar atau hentikan musik">
+            <i class="fas fa-music"></i>
+        </button>
+        <button id="logout-btn" class="music-btn logout-btn" aria-label="Keluar">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+    </div>
+
     <div class="container">
         <div class="gift-container">
-            <!-- Tombol kembali ke main.html -->
+            <!-- Tombol kembali ke main.html dengan hash #boxes-section -->
             <a href="main.html#boxes-section" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Kembali ke Menu
             </a>
@@ -255,6 +270,7 @@
                     </div>
                 </div>
 
+                <!-- Tombol Buka Buket Bunga (Kirim WhatsApp otomatis) -->
                 <button id="bukaGiftBtn" class="btn-gift">
                     <i class="fas fa-gift"></i> Buka Buket Bunga
                 </button>

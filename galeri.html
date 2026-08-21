@@ -10,6 +10,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body class="galeri-page">
+    <!-- Background Music -->
+    <audio id="background-music" loop>
+        <source src="audio/lagu-ultah.mp3" type="audio/mp3" />
+    </audio>
+
+    <!-- Music Control -->
+    <div class="music-control">
+        <button id="music-toggle" class="music-btn" aria-label="Putar atau hentikan musik">
+            <i class="fas fa-music"></i>
+        </button>
+        <button id="logout-btn" class="music-btn logout-btn" aria-label="Keluar">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+    </div>
+
     <div class="container">
         <div class="galeri-container">
             <!-- Tombol kembali ke main.html dengan hash #boxes-section -->
@@ -24,8 +39,8 @@
 
             <div id="galaxy-container">
                 <div id="info-overlay">
-                    <h1 class="galaxy-title">✨ Kenangan Bersama ✨</h1>
-                    <p class="galaxy-subtitle">Klik foto untuk melihat lebih dekat</p>
+                    <h1 class="galaxy-title">✨ I Love You ✨</h1>
+                    <p class="galaxy-subtitle">Klik foto untuk melihat lebih dekat 💕</p>
                 </div>
                 <button id="toggle-rotation" class="control-btn">
                     <i class="fas fa-pause"></i>

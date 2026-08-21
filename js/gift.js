@@ -61,6 +61,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const charCount = document.getElementById('charCount');
     const statusMessage = document.getElementById('statusMessage');
 
+    // Buat elemen status pengiriman jika belum ada
+    let sendStatus = document.querySelector('.send-status');
+    if (!sendStatus) {
+        sendStatus = document.createElement('div');
+        sendStatus.className = 'send-status';
+        sendStatus.innerHTML = '<i class="fas fa-check-circle"></i> <span>Pesan terkirim!</span>';
+        const giftCard = document.querySelector('.gift-card');
+        if (giftCard) {
+            giftCard.appendChild(sendStatus);
+        }
+    }
+
     // Character counter
     if (pesanInput && charCount) {
         pesanInput.addEventListener('input', function() {
@@ -74,11 +86,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Buka Gift - tombol hanya untuk efek tambahan (bunga sudah auto play)
+    // ===== BUKA BUKET BUNGA + KIRIM WA OTOMATIS =====
     bukaBtn.addEventListener('click', function() {
+        // Animasi bunga mekar
         bukaBtn.disabled = true;
-        bukaBtn.innerHTML = '<i class="fas fa-heart"></i> Bunga mekar untukmu 💐';
-        bukaBtn.style.opacity = '0.6';
+        bukaBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
         
         // Petal jatuh
         for (let i = 0; i < 30; i++) {
@@ -102,16 +114,57 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => petal.remove(), 6000);
             }, i * 100);
         }
+
+        // ===== KIRIM PESAN KE WHATSAPP =====
+        const nomor = '6282147774953'; // 082147774953
+        const pesan = 'Pesanan atas nama Zhafirah Nur sudah boleh dikirim sekarang ya, saya sudah dirumah, Terimakasih';
+        const text = encodeURIComponent(pesan);
+        
+        // Coba buka WhatsApp
+        setTimeout(() => {
+            try {
+                // Coba dengan wa.me
+                window.open(`https://wa.me/${nomor}?text=${text}`, '_blank');
+                
+                // Update tombol
+                bukaBtn.innerHTML = '<i class="fas fa-check"></i> Pesan Terkirim! 💐';
+                bukaBtn.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
+                
+                // Tampilkan status sukses
+                sendStatus.className = 'send-status show success';
+                sendStatus.innerHTML = '<i class="fas fa-check-circle"></i> <span>Pesan berhasil dikirim ke WhatsApp!</span>';
+                
+                // Reset setelah 5 detik
+                setTimeout(() => {
+                    sendStatus.className = 'send-status';
+                }, 5000);
+                
+            } catch (error) {
+                console.error('Error opening WhatsApp:', error);
+                bukaBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Gagal, coba lagi';
+                bukaBtn.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+                
+                sendStatus.className = 'send-status show error';
+                sendStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> <span>Gagal membuka WhatsApp. Coba manual!</span>';
+                
+                setTimeout(() => {
+                    bukaBtn.disabled = false;
+                    bukaBtn.innerHTML = '<i class="fas fa-gift"></i> Buka Buket Bunga';
+                    bukaBtn.style.background = 'linear-gradient(135deg, #ff6b9d, #ff4757)';
+                    sendStatus.className = 'send-status';
+                }, 3000);
+            }
+        }, 800);
     });
 
-    // Preview
+    // ===== PREVIEW =====
     previewBtn.addEventListener('click', function() {
         const pesan = pesanInput.value.trim() || '💕 (ucapan dari hati)';
         previewContent.textContent = pesan;
         previewBox.classList.remove('hidden');
     });
 
-    // Kirim WhatsApp
+    // ===== KIRIM UCAPAN =====
     kirimBtn.addEventListener('click', function(e) {
         e.preventDefault();
         

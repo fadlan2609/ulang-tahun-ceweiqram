@@ -895,6 +895,45 @@ body {
     position: relative;
 }
 
+/* ===== TOMBOL KEMBALI KE TIUP LILIN ===== */
+.back-to-cake {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-back-to-cake {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 5px 20px rgba(108, 92, 231, 0.3);
+}
+
+.btn-back-to-cake:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(108, 92, 231, 0.4);
+}
+
+.btn-back-to-cake i {
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .btn-back-to-cake {
+        padding: 12px 24px;
+        font-size: 0.9rem;
+    }
+}
+
 .boxes-header {
     text-align: center;
     margin-bottom: 40px;
@@ -1687,6 +1726,124 @@ body {
 .gift-page .flower__g-fr__leaf--6 { left: 0vmin; top: 6vmin; transform: rotate(25deg) rotateY(-180deg); animation: flower__g-fr-leaft-ans-6 0.5s 4.2s linear backwards; }
 .gift-page .flower__g-fr__leaf--7 { left: 5vmin; top: 22vmin; transform: rotate(45deg); animation: flower__g-fr-leaft-ans-7 0.5s 4s linear backwards; }
 .gift-page .flower__g-fr__leaf--8 { left: -4vmin; top: 15vmin; transform: rotate(15deg) rotateY(-180deg); animation: flower__g-fr-leaft-ans-8 0.5s 3.8s linear backwards; }
+
+/* ===== TOMBOL BUKA BUKET ===== */
+.gift-card .btn-gift {
+    background: linear-gradient(135deg, #ff6b9d, #ff4757);
+    border: none;
+    color: #fff;
+    padding: 16px 40px;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+    box-shadow: 0 6px 25px rgba(255, 107, 157, 0.4);
+    width: 100%;
+    max-width: 350px;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.gift-card .btn-gift::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: rotate(45deg);
+    transition: all 0.5s ease;
+}
+
+.gift-card .btn-gift:hover::before {
+    left: 100%;
+}
+
+.gift-card .btn-gift:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 35px rgba(255, 107, 157, 0.5);
+}
+
+.gift-card .btn-gift:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.gift-card .btn-gift:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.gift-card .btn-gift i {
+    font-size: 1.3rem;
+}
+
+.gift-card .btn-gift .btn-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+}
+
+.gift-card .btn-gift .btn-text small {
+    font-size: 0.7rem;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+/* Status pengiriman */
+.gift-card .send-status {
+    margin-top: 12px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    animation: fadeIn 0.3s ease;
+}
+
+.gift-card .send-status.show {
+    display: flex;
+}
+
+.gift-card .send-status.success {
+    background: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.2);
+}
+
+.gift-card .send-status.error {
+    background: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.gift-card .send-status i {
+    font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .gift-card .btn-gift {
+        padding: 14px 24px;
+        font-size: 0.95rem;
+        max-width: 100%;
+    }
+    .gift-card .btn-gift i {
+        font-size: 1.1rem;
+    }
+}
 
 /* ===== LONG G ===== */
 .gift-page .long-g {

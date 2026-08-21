@@ -78,6 +78,8 @@ window.initGalaxy = function() {
     createStars();
     createPhotos();
     createParticles();
+    createILoveYouText();
+    createCenterSphere(); // <-- TAMBAHKAN FUNGSI INI
     
     // Animation
     animate();
@@ -113,11 +115,11 @@ function createGalaxy() {
     
     // Orbit rings
     const ringConfigs = [
-        { radius: 2.8, color: 0xffd700, opacity: 0.08, tilt: 0 },
-        { radius: 3.8, color: 0xff6b9d, opacity: 0.06, tilt: 0.2 },
-        { radius: 4.8, color: 0x9B59B6, opacity: 0.05, tilt: -0.15 },
-        { radius: 5.8, color: 0x00d4ff, opacity: 0.04, tilt: 0.1 },
-        { radius: 7.0, color: 0xffd700, opacity: 0.03, tilt: -0.25 },
+        { radius: 3.2, color: 0xffd700, opacity: 0.08, tilt: 0 },
+        { radius: 4.2, color: 0xff6b9d, opacity: 0.06, tilt: 0.2 },
+        { radius: 5.2, color: 0x9B59B6, opacity: 0.05, tilt: -0.15 },
+        { radius: 6.2, color: 0x00d4ff, opacity: 0.04, tilt: 0.1 },
+        { radius: 7.5, color: 0xffd700, opacity: 0.03, tilt: -0.25 },
     ];
     
     ringConfigs.forEach(config => {
@@ -138,6 +140,199 @@ function createGalaxy() {
     // Orbit group for photos
     orbitGroup = new THREE.Group();
     scene.add(orbitGroup);
+}
+
+// ============================================
+// CREATE CENTER SPHERE (BOLA POROS DI TENGAH)
+// ============================================
+function createCenterSphere() {
+    // === BOLA UTAMA ===
+    const sphereGeo = new THREE.SphereGeometry(1.2, 64, 64);
+    const sphereMat = new THREE.MeshPhysicalMaterial({
+        color: 0xff6b9d,
+        metalness: 0.3,
+        roughness: 0.2,
+        emissive: 0xff6b9d,
+        emissiveIntensity: 0.15,
+        clearcoat: 0.5,
+        clearcoatRoughness: 0.3,
+        transparent: true,
+        opacity: 0.85,
+    });
+    const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+    sphere.position.set(0, 0, 0);
+    sphere.userData.isCenter = true;
+    scene.add(sphere);
+
+    // === GLOW RING DI SEKITAR BOLA ===
+    const glowRingGeo = new THREE.TorusGeometry(1.5, 0.05, 32, 64);
+    const glowRingMat = new THREE.MeshBasicMaterial({
+        color: 0xffd700,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending,
+    });
+    const glowRing = new THREE.Mesh(glowRingGeo, glowRingMat);
+    glowRing.position.set(0, 0, 0);
+    glowRing.rotation.x = Math.PI / 2;
+    glowRing.userData.isCenterRing = true;
+    scene.add(glowRing);
+
+    // === RING KEDUA (MIRING) ===
+    const glowRing2Geo = new THREE.TorusGeometry(1.6, 0.03, 32, 64);
+    const glowRing2Mat = new THREE.MeshBasicMaterial({
+        color: 0xff6b9d,
+        transparent: true,
+        opacity: 0.4,
+        blending: THREE.AdditiveBlending,
+    });
+    const glowRing2 = new THREE.Mesh(glowRing2Geo, glowRing2Mat);
+    glowRing2.position.set(0, 0, 0);
+    glowRing2.rotation.x = Math.PI / 3;
+    glowRing2.rotation.z = Math.PI / 4;
+    glowRing2.userData.isCenterRing = true;
+    scene.add(glowRing2);
+
+    // === RING KETIGA ===
+    const glowRing3Geo = new THREE.TorusGeometry(1.4, 0.02, 32, 64);
+    const glowRing3Mat = new THREE.MeshBasicMaterial({
+        color: 0x9B59B6,
+        transparent: true,
+        opacity: 0.3,
+        blending: THREE.AdditiveBlending,
+    });
+    const glowRing3 = new THREE.Mesh(glowRing3Geo, glowRing3Mat);
+    glowRing3.position.set(0, 0, 0);
+    glowRing3.rotation.x = Math.PI / 4;
+    glowRing3.rotation.z = -Math.PI / 3;
+    glowRing3.userData.isCenterRing = true;
+    scene.add(glowRing3);
+
+    // === GLOW EFEK (SPRITE) ===
+    const glowCanvas = document.createElement('canvas');
+    glowCanvas.width = 256;
+    glowCanvas.height = 256;
+    const gCtx = glowCanvas.getContext('2d');
+    
+    const gradient = gCtx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    gradient.addColorStop(0, 'rgba(255, 107, 157, 0.3)');
+    gradient.addColorStop(0.3, 'rgba(255, 107, 157, 0.1)');
+    gradient.addColorStop(0.7, 'rgba(255, 215, 0, 0.05)');
+    gradient.addColorStop(1, 'rgba(255, 107, 157, 0)');
+    gCtx.fillStyle = gradient;
+    gCtx.fillRect(0, 0, 256, 256);
+    
+    const glowTexture = new THREE.CanvasTexture(glowCanvas);
+    const glowMat = new THREE.SpriteMaterial({
+        map: glowTexture,
+        transparent: true,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+        opacity: 0.8,
+    });
+    const glowSprite = new THREE.Sprite(glowMat);
+    glowSprite.scale.set(6, 6, 1);
+    glowSprite.position.set(0, 0, 0);
+    glowSprite.userData.isCenterGlow = true;
+    scene.add(glowSprite);
+
+    // === TEKS DI ATAS BOLA ===
+    const textCanvas = document.createElement('canvas');
+    textCanvas.width = 512;
+    textCanvas.height = 128;
+    const tCtx = textCanvas.getContext('2d');
+    
+    tCtx.clearRect(0, 0, textCanvas.width, textCanvas.height);
+    tCtx.textAlign = 'center';
+    tCtx.textBaseline = 'middle';
+    
+    tCtx.shadowColor = 'rgba(255, 215, 0, 0.5)';
+    tCtx.shadowBlur = 20;
+    
+    tCtx.font = 'bold 50px "Dancing Script", "Great Vibes", cursive';
+    const textGradient = tCtx.createLinearGradient(0, 0, textCanvas.width, 0);
+    textGradient.addColorStop(0, '#ff6b9d');
+    textGradient.addColorStop(0.5, '#ffd700');
+    textGradient.addColorStop(1, '#ff6b9d');
+    tCtx.fillStyle = textGradient;
+    tCtx.fillText('❤️ Zhafirah ❤️', textCanvas.width / 2, textCanvas.height / 2);
+    
+    const textTexture = new THREE.CanvasTexture(textCanvas);
+    const textMat = new THREE.SpriteMaterial({
+        map: textTexture,
+        transparent: true,
+        depthWrite: false,
+    });
+    const textSprite = new THREE.Sprite(textMat);
+    textSprite.scale.set(4, 1, 1);
+    textSprite.position.set(0, 2.2, 0);
+    textSprite.userData.isCenterText = true;
+    scene.add(textSprite);
+
+    // === PARTIKEL DI SEKITAR BOLA ===
+    const particleCount = 80;
+    const particleGeo = new THREE.BufferGeometry();
+    const particlePos = new Float32Array(particleCount * 3);
+    const particleColors = new Float32Array(particleCount * 3);
+    
+    for (let i = 0; i < particleCount; i++) {
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos((Math.random() * 2) - 1);
+        const radius = 1.8 + Math.random() * 1.2;
+        
+        particlePos[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+        particlePos[i * 3 + 1] = radius * Math.cos(phi);
+        particlePos[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
+        
+        const c = new THREE.Color().setHSL(0.95 + Math.random() * 0.1, 0.8, 0.6 + Math.random() * 0.3);
+        particleColors[i * 3] = c.r;
+        particleColors[i * 3 + 1] = c.g;
+        particleColors[i * 3 + 2] = c.b;
+    }
+    
+    particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+    particleGeo.setAttribute('color', new THREE.BufferAttribute(particleColors, 3));
+    
+    const particleMat = new THREE.PointsMaterial({
+        size: 0.06,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending,
+        sizeAttenuation: true,
+        depthWrite: false,
+    });
+    const particles = new THREE.Points(particleGeo, particleMat);
+    particles.position.set(0, 0, 0);
+    particles.userData.isCenterParticles = true;
+    scene.add(particles);
+
+    // === PARTIKEL KEDUA (BERKILAUAN) ===
+    const sparkleCount = 30;
+    const sparkleGeo = new THREE.BufferGeometry();
+    const sparklePos = new Float32Array(sparkleCount * 3);
+    for (let i = 0; i < sparkleCount; i++) {
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos((Math.random() * 2) - 1);
+        const radius = 2.0 + Math.random() * 1.5;
+        sparklePos[i * 3] = radius * Math.sin(phi) * Math.cos(theta);
+        sparklePos[i * 3 + 1] = radius * Math.cos(phi);
+        sparklePos[i * 3 + 2] = radius * Math.sin(phi) * Math.sin(theta);
+    }
+    sparkleGeo.setAttribute('position', new THREE.BufferAttribute(sparklePos, 3));
+    const sparkleMat = new THREE.PointsMaterial({
+        size: 0.04,
+        color: 0xffd700,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending,
+        sizeAttenuation: true,
+        depthWrite: false,
+    });
+    const sparkles = new THREE.Points(sparkleGeo, sparkleMat);
+    sparkles.position.set(0, 0, 0);
+    sparkles.userData.isCenterSparkles = true;
+    scene.add(sparkles);
 }
 
 function createStars() {
@@ -229,28 +424,119 @@ function createParticles() {
     scene.add(particles);
 }
 
+// ============================================
+// CREATE "I LOVE YOU" TEXT IN 3D
+// ============================================
+function createILoveYouText() {
+    const canvas = document.createElement('canvas');
+    canvas.width = 1024;
+    canvas.height = 256;
+    const ctx = canvas.getContext('2d');
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.shadowColor = 'rgba(255, 107, 157, 0.5)';
+    ctx.shadowBlur = 30;
+    
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop(0, '#ff6b9d');
+    gradient.addColorStop(0.3, '#ffd700');
+    gradient.addColorStop(0.6, '#ff6b9d');
+    gradient.addColorStop(0.8, '#ffd700');
+    gradient.addColorStop(1, '#ff6b9d');
+    
+    ctx.font = 'bold 100px "Dancing Script", "Great Vibes", cursive';
+    ctx.fillStyle = gradient;
+    ctx.shadowColor = 'rgba(255, 107, 157, 0.3)';
+    ctx.shadowBlur = 40;
+    ctx.fillText('I Love You', canvas.width / 2, canvas.height / 2);
+    
+    ctx.shadowBlur = 20;
+    ctx.font = '40px "Poppins", sans-serif';
+    ctx.fillStyle = 'rgba(255, 182, 193, 0.6)';
+    ctx.fillText('💕 Zhafirah 💕', canvas.width / 2, canvas.height / 2 + 80);
+    
+    ctx.font = '50px sans-serif';
+    ctx.fillStyle = '#ff6b9d';
+    ctx.shadowBlur = 20;
+    ctx.fillText('❤️', 100, canvas.height / 2 - 20);
+    ctx.fillText('❤️', canvas.width - 100, canvas.height / 2 - 20);
+    
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.anisotropy = 4;
+    
+    const material = new THREE.SpriteMaterial({
+        map: texture,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+    });
+    
+    const sprite = new THREE.Sprite(material);
+    sprite.scale.set(8, 2, 1);
+    sprite.position.set(0, 4.5, -2);
+    scene.add(sprite);
+    
+    // Glow effect
+    const glowCanvas = document.createElement('canvas');
+    glowCanvas.width = 1024;
+    glowCanvas.height = 256;
+    const gCtx = glowCanvas.getContext('2d');
+    gCtx.clearRect(0, 0, glowCanvas.width, glowCanvas.height);
+    
+    const glowGradient = gCtx.createRadialGradient(512, 128, 10, 512, 128, 300);
+    glowGradient.addColorStop(0, 'rgba(255, 107, 157, 0.15)');
+    glowGradient.addColorStop(0.5, 'rgba(255, 107, 157, 0.05)');
+    glowGradient.addColorStop(1, 'rgba(255, 107, 157, 0)');
+    gCtx.fillStyle = glowGradient;
+    gCtx.fillRect(0, 0, glowCanvas.width, glowCanvas.height);
+    
+    const glowTexture = new THREE.CanvasTexture(glowCanvas);
+    const glowMaterial = new THREE.SpriteMaterial({
+        map: glowTexture,
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        opacity: 0.8,
+    });
+    
+    const glowSprite = new THREE.Sprite(glowMaterial);
+    glowSprite.scale.set(12, 4, 1);
+    glowSprite.position.set(0, 4.5, -2.5);
+    scene.add(glowSprite);
+}
+
+// ============================================
+// CREATE PHOTOS - SPIRAL DISTRIBUTION
+// ============================================
 function createPhotos() {
     clickableObjects = [];
     const count = photos.length;
     
+    const minSize = 0.7;
+    const maxSize = 1.2;
+    
     photos.forEach((photo, index) => {
         const t = (index / count) * Math.PI * 8;
-        const radius = 2.2 + (index / count) * 5.5;
+        const radius = 2.8 + (index / count) * 5.5;
         const angle = t + (Math.random() - 0.5) * 0.3;
-        const heightOffset = (Math.random() - 0.5) * 2.5;
+        const heightOffset = (Math.random() - 0.5) * 3;
         
         const x = radius * Math.cos(angle);
         const z = radius * Math.sin(angle);
         const y = heightOffset;
         
-        const size = 0.5 + Math.random() * 0.5;
+        const size = minSize + (index / count) * (maxSize - minSize);
         
         const card = createPhotoCard(photo, size, index);
         card.position.set(x, y, z);
         
-        card.rotation.x = (Math.random() - 0.5) * 0.2;
-        card.rotation.y = (Math.random() - 0.5) * 0.2;
-        card.rotation.z = (Math.random() - 0.5) * 0.2;
+        card.rotation.x = (Math.random() - 0.5) * 0.3;
+        card.rotation.y = (Math.random() - 0.5) * 0.3;
+        card.rotation.z = (Math.random() - 0.5) * 0.3;
         
         card.userData = {
             index: index,
@@ -275,6 +561,9 @@ function createPhotos() {
     orbitGroup.userData.photoObjects = clickableObjects;
 }
 
+// ============================================
+// CREATE PHOTO CARD
+// ============================================
 function createPhotoCard(photo, size, index) {
     const group = new THREE.Group();
     
@@ -313,30 +602,69 @@ function createPhotoCard(photo, size, index) {
     
     const mesh = new THREE.Mesh(geometry, material);
     
-    const borderSize = 0.06;
+    // Frame
+    const borderSize = 0.12;
     const borderGeo = new THREE.PlaneGeometry(cardWidth + borderSize, cardHeight + borderSize);
     const borderMat = new THREE.MeshBasicMaterial({
         color: 0xffd700,
         transparent: true,
-        opacity: 0.3,
+        opacity: 0.5,
         side: THREE.DoubleSide,
     });
     const border = new THREE.Mesh(borderGeo, borderMat);
-    border.position.z = -0.001;
+    border.position.z = -0.002;
     
-    const innerBorderGeo = new THREE.PlaneGeometry(cardWidth + 0.02, cardHeight + 0.02);
+    const innerBorderSize = 0.05;
+    const innerBorderGeo = new THREE.PlaneGeometry(cardWidth + innerBorderSize, cardHeight + innerBorderSize);
     const innerBorderMat = new THREE.MeshBasicMaterial({
         color: 0xffffff,
         transparent: true,
-        opacity: 0.05,
+        opacity: 0.15,
         side: THREE.DoubleSide,
     });
     const innerBorder = new THREE.Mesh(innerBorderGeo, innerBorderMat);
-    innerBorder.position.z = 0.001;
+    innerBorder.position.z = -0.001;
     
+    const glowGeo = new THREE.PlaneGeometry(cardWidth + 0.3, cardHeight + 0.3);
+    const glowMat = new THREE.MeshBasicMaterial({
+        color: 0xff6b9d,
+        transparent: true,
+        opacity: 0.05,
+        side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending,
+    });
+    const glow = new THREE.Mesh(glowGeo, glowMat);
+    glow.position.z = -0.005;
+    
+    const cornerSize = 0.08;
+    const cornerMat = new THREE.MeshBasicMaterial({
+        color: 0xffd700,
+        transparent: true,
+        opacity: 0.6,
+    });
+    
+    const corners = [
+        [-0.5, 0.5],
+        [0.5, 0.5],
+        [-0.5, -0.5],
+        [0.5, -0.5]
+    ];
+    
+    corners.forEach(([cx, cy]) => {
+        const cornerGeo = new THREE.PlaneGeometry(cornerSize, cornerSize);
+        const corner = new THREE.Mesh(cornerGeo, cornerMat);
+        corner.position.set(cx * (cardWidth/2 + borderSize/2), cy * (cardHeight/2 + borderSize/2), 0.001);
+        if (cx > 0 && cy > 0) corner.rotation.z = 0;
+        else if (cx < 0 && cy > 0) corner.rotation.z = Math.PI / 2;
+        else if (cx < 0 && cy < 0) corner.rotation.z = Math.PI;
+        else corner.rotation.z = -Math.PI / 2;
+        group.add(corner);
+    });
+    
+    group.add(glow);
     group.add(border);
-    group.add(mesh);
     group.add(innerBorder);
+    group.add(mesh);
     
     group.userData.isPhoto = true;
     group.userData.photoData = photo;
@@ -345,6 +673,9 @@ function createPhotoCard(photo, size, index) {
     return group;
 }
 
+// ============================================
+// PHOTO CLICK HANDLER
+// ============================================
 function onPhotoClick(event) {
     if (!renderer) return;
     
@@ -375,6 +706,9 @@ function onPhotoClick(event) {
     }
 }
 
+// ============================================
+// PHOTO HOVER HANDLER
+// ============================================
 function onPhotoHover(event) {
     if (!renderer) return;
     
@@ -414,6 +748,9 @@ function onPhotoHover(event) {
     }
 }
 
+// ============================================
+// SHOW PHOTO MODAL
+// ============================================
 function showPhotoModal(photoData) {
     closePhotoModal();
     
@@ -563,6 +900,9 @@ function closePhotoModalOnEsc(e) {
     }
 }
 
+// ============================================
+// TOGGLE ROTATION
+// ============================================
 function toggleRotation() {
     isRotating = !isRotating;
     const btn = document.getElementById('toggle-rotation');
@@ -571,15 +911,20 @@ function toggleRotation() {
     }
 }
 
+// ============================================
+// ANIMATION LOOP
+// ============================================
 function animate() {
     requestAnimationFrame(animate);
     
     const time = Date.now() * 0.001;
     
+    // Rotasi galaxy
     if (isRotating && orbitGroup) {
         orbitGroup.rotation.y += 0.002;
     }
     
+    // Floating photos
     if (orbitGroup && orbitGroup.userData.photoObjects) {
         orbitGroup.userData.photoObjects.forEach((group) => {
             const data = group.userData;
@@ -594,6 +939,37 @@ function animate() {
         });
     }
     
+    // ===== ANIMASI BOLA POROS =====
+    scene.children.forEach(child => {
+        // Rotasi bola
+        if (child.userData && child.userData.isCenter) {
+            child.rotation.x += 0.005;
+            child.rotation.y += 0.008;
+        }
+        // Rotasi ring
+        if (child.userData && child.userData.isCenterRing) {
+            child.rotation.x += 0.005;
+            child.rotation.y += 0.007;
+        }
+        // Rotasi partikel bola
+        if (child.userData && child.userData.isCenterParticles) {
+            child.rotation.x += 0.003;
+            child.rotation.y += 0.005;
+        }
+        // Rotasi sparkles
+        if (child.userData && child.userData.isCenterSparkles) {
+            child.rotation.x += 0.004;
+            child.rotation.y += 0.006;
+        }
+        // Glow sprite berdenyut
+        if (child.userData && child.userData.isCenterGlow) {
+            const pulse = 0.8 + Math.sin(time * 0.5) * 0.2;
+            child.scale.set(6 * pulse, 6 * pulse, 1);
+            child.material.opacity = 0.6 + Math.sin(time * 0.5) * 0.2;
+        }
+    });
+    
+    // Rotate stars
     scene.children.forEach(child => {
         if (child.userData && child.userData.isStars) {
             child.rotation.y += 0.00015;
@@ -601,11 +977,15 @@ function animate() {
         }
     });
     
+    // Render
     if (renderer && scene && camera) {
         renderer.render(scene, camera);
     }
 }
 
+// ============================================
+// RESIZE HANDLER
+// ============================================
 function onResize() {
     if (!renderer) return;
     const container = document.getElementById('galaxy-container');
@@ -619,6 +999,9 @@ function onResize() {
     renderer.setSize(width, height);
 }
 
+// ============================================
+// CSS ANIMATIONS
+// ============================================
 const animationStyles = document.createElement('style');
 animationStyles.textContent = `
     @keyframes fadeIn {
@@ -628,6 +1011,10 @@ animationStyles.textContent = `
     @keyframes scaleIn {
         from { transform: scale(0.85) translateY(20px); opacity: 0; }
         to { transform: scale(1) translateY(0); opacity: 1; }
+    }
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
     }
 `;
 document.head.appendChild(animationStyles);

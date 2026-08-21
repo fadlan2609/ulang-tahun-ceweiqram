@@ -48,22 +48,31 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ===== BUKA SURAT =====
+    // ===== BUKA SURAT - DENGAN MAX-HEIGHT YANG CUKUP =====
     const btnBuka = document.getElementById('bukaSuratBtn');
     const suratBody = document.getElementById('suratBody');
     const lines = document.querySelectorAll('.line');
 
     btnBuka.addEventListener('click', function() {
-        suratBody.classList.add('open');
+        // Buka surat dengan max-height besar agar semua pesan terlihat
+        suratBody.style.maxHeight = '2000px';
+        suratBody.style.opacity = '1';
+        suratBody.style.overflow = 'visible';
         
+        // Animasi per baris dengan delay yang lebih singkat
         lines.forEach((line, index) => {
             setTimeout(() => {
                 line.classList.add('show');
-            }, 600 + index * 250);
+            }, 300 + index * 120);
         });
         
         btnBuka.disabled = true;
         btnBuka.innerHTML = '<i class="fas fa-heart"></i> Surat terbuka dengan cinta';
         btnBuka.style.opacity = '0.6';
+        
+        // Scroll ke bawah agar semua pesan terlihat
+        setTimeout(() => {
+            suratBody.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 500);
     });
 });

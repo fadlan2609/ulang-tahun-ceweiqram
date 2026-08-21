@@ -1042,7 +1042,7 @@ body {
     border-color: #f39c12;
 }
 
-/* ===== SURAT PAGE ===== */
+/* ===== SURAT PAGE - FIX TERPOTONG ===== */
 .surat-page {
     background: linear-gradient(135deg, #1a0a1e, #2d152d, #1a0a1e);
     min-height: 100vh;
@@ -1075,6 +1075,8 @@ body {
     padding: 40px 35px;
     border: 1px solid rgba(255, 107, 157, 0.08);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    max-height: none;
+    overflow: visible;
 }
 
 .surat-header {
@@ -1098,13 +1100,14 @@ body {
 .surat-body {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 1.5s ease, opacity 1s ease;
+    transition: max-height 1.8s ease, opacity 1s ease;
     opacity: 0;
 }
 
 .surat-body.open {
-    max-height: 900px;
+    max-height: 3000px !important;
     opacity: 1;
+    overflow: visible !important;
 }
 
 .surat-body .line {
@@ -1115,6 +1118,7 @@ body {
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.6s ease;
+    padding: 4px 0;
 }
 
 .surat-body .line.show {
@@ -1125,6 +1129,9 @@ body {
 .surat-body .line:nth-child(odd) { color: #ffb3c6; }
 .surat-body .line:nth-child(even) { color: #f0e6d3; }
 .surat-body .line strong { color: #ff6b9d; }
+.surat-body .line:last-child {
+    margin-bottom: 10px;
+}
 
 .btn-buka {
     background: linear-gradient(135deg, #ff6b9d, #ff4757);
@@ -1151,6 +1158,28 @@ body {
 .btn-buka:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+/* Responsive Surat */
+@media (max-width: 768px) {
+    .surat-card {
+        padding: 25px 20px;
+    }
+    .surat-body .line {
+        font-size: 0.9rem;
+        line-height: 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .surat-card {
+        padding: 20px 15px;
+    }
+    .surat-body .line {
+        font-size: 0.85rem;
+        line-height: 1.9;
+        padding: 3px 0;
+    }
 }
 
 /* ===== GALERI PAGE ===== */
@@ -2277,10 +2306,6 @@ body {
     
     .ucapan-content h1 {
         font-size: 2.2rem;
-    }
-    
-    .surat-card {
-        padding: 25px 20px;
     }
     
     #galaxy-container {
